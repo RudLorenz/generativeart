@@ -8,12 +8,10 @@
 
 int main()
 {
-    const int HEIGHT = 512;
     const int WIDTH  = 512;
+    const int HEIGHT = 512;
 
-    auto padding = (4 - (WIDTH % 4)) % 4;
-
-    std::vector<BGRPalette> clr((WIDTH + padding) * HEIGHT);
+    BitmapImg img(WIDTH, HEIGHT);
 
     int x_stretch = HEIGHT / 256;
     int y_stretch = WIDTH / 256;
@@ -22,13 +20,13 @@ int main()
     {
         for (unsigned j = 0; j < WIDTH; ++j)
         {
-            clr[i*WIDTH + j].b = 255;
-            clr[i*WIDTH + j].g = ((i + j) / (x_stretch + y_stretch)) % 256;
-            clr[i*WIDTH + j].r = 255 - (((i + j) / (x_stretch + y_stretch)) % 256);
+            img(i, j).b = (i / x_stretch) % 256;
+            img(i, j).g = ((i + j) / (x_stretch + y_stretch)) % 256;
+            img(i, j).r = 255 - (((i + j) / (x_stretch + y_stretch)) % 256);
         }
     }
 
-    bmp_generator("tst.bmp", WIDTH, HEIGHT, clr);
+    img.writeToFile("tst.bmp");
      
     return 0;
 }
