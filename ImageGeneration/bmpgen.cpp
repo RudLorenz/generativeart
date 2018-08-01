@@ -37,8 +37,11 @@ int BitmapImg::writeToFile(const std::string &filename)
 
     std::ofstream out_f(filename, std::ios::out | std::ofstream::binary);
 
-    if (!out_f.is_open()) {
-        return -1;
+    if (!out_f) {
+        std::string err_message = "file ";
+        err_message += filename;
+        err_message += " not found\n";
+        throw std::runtime_error(err_message);
     }
 
     out_f.write(reinterpret_cast<char *>(&bmp_header), sizeof(bmp_header));
@@ -66,14 +69,15 @@ BGRPalette &BitmapImg::operator()(size_t row, size_t column)
     //don't allow user to access "padded" pixels
     if (row >= std::abs(height_) || column >= width_) { throw std::out_of_range("Index out of bounds"); }
 
-    //turn the imaghe upside down so (0,0) is in left top counter
-    return pixels_[(width_ * height_) - (row * height_ + column)];
+    //turn the image upside down so (0,0) is in left top counter
+    return pixels_[(height_ - row) * height_ + column];
 }
 
 BGRPalette BitmapImg::operator()(size_t row, size_t column) const
 {
     if (row >= std::abs(height_) || column >= width_) { throw std::out_of_range("Index out of bounds"); }
 
-    return pixels_[(width_ * height_) - (row * height_ + column)];
+    //turn the image upside down so (0,0) is in left top counter
+    return pixels_[(height_ - row) * height_ + column];
 }
 
