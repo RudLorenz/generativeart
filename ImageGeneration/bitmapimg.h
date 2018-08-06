@@ -19,8 +19,8 @@ public:
     unsigned getWidth() const;
     int      getHeight() const;
 
-    BGRPalette& operator()(size_t row, size_t column);
-    const BGRPalette& operator()(size_t row, size_t column) const;
+    BGRPalette& operator()(size_t row, size_t col);
+    const BGRPalette& operator()(size_t row, size_t col) const;
 
 private:
     unsigned width_;
@@ -36,8 +36,8 @@ BitmapImg::BitmapImg() : width_(0), height_(0), pixels_(0)
 
 BitmapImg::BitmapImg(unsigned width, int height) : width_(width), height_(height),
                                                    pixels_(3 * (((4 - (width % 4)) % 4) + width) * std::abs(height), 0)
-//a bit too complicated maybe? calculations needed to add padding
-//declared in bmp file format:
+// a bit too complicated maybe? calculations needed to add padding
+// declared in bmp file format:
 // "Each row in the Pixel array is padded to a multiple of 4 bytes in size "
 {
 }
@@ -91,23 +91,29 @@ int BitmapImg::getHeight() const
     return height_;
 }
 
+/*    rows
+ *  c  ---→
+ *  o|
+ *  l|
+ *  s↓
+ */
 
-BGRPalette &BitmapImg::operator()(size_t row, size_t column)
+BGRPalette &BitmapImg::operator()(size_t row, size_t col)
 {
-    //don't allow user to access "padded" pixels
-    if (row >= std::abs(height_) || column >= width_) { throw std::out_of_range("Index out of bounds"); }
+    // don't allow user to access "padded" pixels
+    if (row >= std::abs(height_) || col >= width_) { throw std::out_of_range("Index out of bounds"); }
 
-    //turn the image upside down so (0,0) is in left top counter
-    return pixels_[(height_ - row - 1) * width_ + column];
+    // turn the image upside down so (0,0) is in left top counter
+    return pixels_[(height_ - col - 1) * width_ + row];
 }
 
-const BGRPalette &BitmapImg::operator()(size_t row, size_t column) const
+const BGRPalette &BitmapImg::operator()(size_t row, size_t col) const
 {
-    //don't allow user to access "padded" pixels
-    if (row >= std::abs(height_) || column >= width_) { throw std::out_of_range("Index out of bounds"); }
+    // don't allow user to access "padded" pixels
+    if (row >= std::abs(height_) || col >= width_) { throw std::out_of_range("Index out of bounds"); }
 
-    //turn the image upside down so (0,0) is in left top counter
-    return pixels_[(height_ - row - 1) * width_ + column];
+    // turn the image upside down so (0,0) is in left top counter
+    return pixels_[(height_ - col - 1) * width_ + row];
 }
 
 

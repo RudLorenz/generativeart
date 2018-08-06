@@ -4,11 +4,11 @@
 #pragma pack(push, 1)
 typedef struct tagBitmapHeader
 {
-    unsigned short fileType  = 0x4D42; //BM from standart
+    unsigned short fileType  = 0x4D42; //'BM'
     unsigned       fileSize;
     unsigned short reserved1 = 0;
     unsigned short reserved2 = 0;
-    unsigned       offset    = 54;   //was 1078
+    unsigned       offset    = 54;
 
     //Info header
     unsigned       size = 40;        //info header size
@@ -32,6 +32,7 @@ typedef struct tagBGRPalette
 
     tagBGRPalette()  : b(0), g(0), r(0) {};
     tagBGRPalette(unsigned char value) : b(value), g(value), r(value) {};
+    tagBGRPalette(unsigned char blue, unsigned char green, unsigned char red) : b(blue), g(green), r(red) {};
 
 } BGRPalette;
 

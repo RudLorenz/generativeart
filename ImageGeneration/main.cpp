@@ -1,40 +1,39 @@
 #include <memory>
 #include <iostream>
 
-#include "bmpgen.h"
+#include "bitmapimg.h"
+#include "Point.h"
+#include "BasicPolygons.h"
 
 int main()
 {
-    const int WIDTH  = 512;
-    const int HEIGHT = 512;
+    const int WIDTH  = 16;
+    const int HEIGHT = 16;
 
     std::unique_ptr<BitmapImg> img(new BitmapImg(WIDTH, HEIGHT));
 
-    int x_stretch = WIDTH  / 256;
-    int y_stretch = HEIGHT / 256;
-
-    for (unsigned i = 0; i < HEIGHT; ++i)
-    {
-        for (unsigned j = 0; j < WIDTH; ++j)
-        {
-            (*img)(i, j).b = (i / y_stretch) % 256;
-            (*img)(i, j).g = ((i + j) / (x_stretch + y_stretch)) % 256;
-            (*img)(i, j).r = 255 - (((i + j) / (x_stretch + y_stretch)) % 256);
+    for (unsigned i = 0; i < HEIGHT; ++i) {
+        for (unsigned j = 0; j < WIDTH; ++j) {
+            (*img)(i, j) = 255;
         }
     }
 
-    std::unique_ptr<BitmapImg> img_2(new BitmapImg(WIDTH, HEIGHT));
+    std::vector<Line> lines;
 
-    for (unsigned i = 0; i < HEIGHT; ++i)
-    {
-        for (unsigned j = 0; j < WIDTH; ++j)
-        {
-            (*img_2)(i, j).r = 0;
-            (*img_2)(i, j).g = 0;
-            (*img_2)(i, j).b = 0;
-        }
+    for (unsigned i = 1; i < HEIGHT; ++i) {
+        lines.push_back({1, 1, i, HEIGHT-1});
     }
 
+    unsigned dc = 256 / lines.size();
+    unsigned color = 0;
+
+    for (auto &item : lines)
+    {
+        item.draw(*img, color);
+        color = (color + dc) % 256; // %256 - overflow protection
+    }
+
+    img->writeToFile("tst.bmp");
      
     return 0;
 }
