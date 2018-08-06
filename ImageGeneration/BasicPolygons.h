@@ -51,7 +51,7 @@ Line::Line(unsigned x1, unsigned y1, unsigned x2, unsigned y2)
 
 void Line::draw(BitmapImg &canvas, const BGRPalette &color)
 {
-    if (abs(p2_.y() - p1_.y()) < abs(p2_.x() - p1_.x()))
+    if (std::abs(static_cast<int>(p2_.y() - p1_.y())) < std::abs(static_cast<int>(p2_.x() - p1_.x())))
     {
         if (p1_.x() > p2_.x()) {
             plotLineLow(p2_, p1_, canvas, color);
@@ -88,7 +88,7 @@ void Line::plotLineLow(const Point& p1, const Point& p2, BitmapImg &canvas, cons
     int approx = 2 * dy - dx;
     unsigned y_step = p1.y();
 
-    for (unsigned x_step = p1.x(); x_step < p2.x(); ++x_step)
+    for (unsigned x_step = p1.x(); x_step <= p2.x(); ++x_step)
     {
         canvas(x_step, y_step) = color;  // TODO add sign + range check
 
@@ -119,7 +119,7 @@ void Line::plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, con
     int approx = 2 * dx - dy;
     unsigned x_step = p1.x();
 
-    for (unsigned y_step = p1.y(); y_step < p2.y(); ++y_step)
+    for (unsigned y_step = p1.y(); y_step <= p2.y(); ++y_step)
     {
         canvas(x_step, y_step) = color;  // TODO add sign + range check
 
