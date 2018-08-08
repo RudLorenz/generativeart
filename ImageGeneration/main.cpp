@@ -1,9 +1,9 @@
 #include <memory>
 #include <iostream>
 
-#include "bitmapimg.h"
-#include "Point.h"
-#include "BasicPolygons.h"
+#include "src/bitmapimg.h"
+#include "src/point.h"
+#include "src/line.h"
 
 int main()
 {

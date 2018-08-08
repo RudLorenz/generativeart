@@ -1,8 +1,8 @@
-#ifndef BASIC_POLYGONS_H
-#define BASIC_POLYGONS_H
+#ifndef LINE_H
+#define LINE_H
 
-#include "Drawable.h"
-#include "Point.h"
+#include "drawable.h"
+#include "point.h"
 
 #include <cmath>
 #include <vector>
@@ -135,4 +135,4 @@ void Line::plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, con
 
 
 
-#endif //BASIC_POLYGONS_H
+#endif // LINE_H

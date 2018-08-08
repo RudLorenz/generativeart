@@ -56,7 +56,7 @@ int BitmapImg::writeToFile(const std::string &filename)
 
     bmp_header.width           = width_;
     bmp_header.height          = height_;
-    bmp_header.bitPerPixel     = 24;               //true color
+    bmp_header.bitPerPixel     = 24;
     bmp_header.bitmapSize      = 0;
     bmp_header.ppmX            = 0;
     bmp_header.ppmY            = 0;
@@ -117,4 +117,4 @@ const BGRPalette &BitmapImg::operator()(size_t row, size_t col) const
 }
 
 
-#endif //BITMAPIMG_H
+#endif // BITMAPIMG_H

@@ -1,9 +1,7 @@
-#ifndef POLYGON_H
-#define POLYGON_H
+#ifndef DRAWABLE_H
+#define DRAWABLE_H
 
 #include "bitmapimg.h"
-
-#include <vector>
 
 class Drawable
 {
@@ -11,4 +9,4 @@ public:
     virtual void draw(BitmapImg& canvas, const BGRPalette& color) = 0;
 };
 
-#endif //POLYGON_H
+#endif // DRAWABLE_H
