@@ -4,11 +4,12 @@
 #include "src/bitmapimg.h"
 #include "src/point.h"
 #include "src/line.h"
+#include "src/polygon.h"
 
 int main()
 {
-    const int WIDTH  = 16;
-    const int HEIGHT = 16;
+    const int WIDTH  = 32;
+    const int HEIGHT = 32;
 
     std::unique_ptr<BitmapImg> img(new BitmapImg(WIDTH, HEIGHT));
 
@@ -18,20 +19,11 @@ int main()
         }
     }
 
-    std::vector<Line> lines;
+    //Polygon poly {{4, 10}, {12, 2}, {20, 10}, {16, 18}, {8, 18}};
 
-    for (unsigned i = 1; i < HEIGHT; ++i) {
-        lines.push_back({1, 1, i, HEIGHT-1});
-    }
+    Polygon poly {4, 10, 12, 2, 20, 10, 16, 18, 8, 18};
 
-    unsigned dc = 256 / lines.size();
-    unsigned color = 0;
-
-    for (auto &item : lines)
-    {
-        item.draw(*img, color);
-        color = (color + dc) % 256; // %256 - overflow protection
-    }
+    poly.draw(*img, {0, 0, 255});
 
     img->writeToFile("tst.bmp");
      
