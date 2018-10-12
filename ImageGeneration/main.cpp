@@ -5,25 +5,24 @@
 #include "src/point.h"
 #include "src/line.h"
 #include "src/polygon.h"
+#include "src/gradient.h"
 
 int main()
 {
-    const int WIDTH  = 32;
-    const int HEIGHT = 32;
+    const int WIDTH  = 512;
+    const int HEIGHT = 512;
 
     std::unique_ptr<BitmapImg> img(new BitmapImg(WIDTH, HEIGHT));
 
-    for (unsigned i = 0; i < HEIGHT; ++i) {
+    Gradient gr_1({0, HEIGHT/2}, {512, HEIGHT/2}, {255, 0, 0}, {100, 0, 255});
+
+
+    for (unsigned i = 0; i < HEIGHT; ++i)
+    {
         for (unsigned j = 0; j < WIDTH; ++j) {
-            (*img)(i, j) = 255;
+            (*img)(i, j) = gr_1.getcolor(Point(i, j));
         }
     }
-
-    //Polygon poly {{4, 10}, {12, 2}, {20, 10}, {16, 18}, {8, 18}};
-
-    Polygon poly {4, 10, 12, 2, 20, 10, 16, 18, 8, 18};
-
-    poly.draw(*img, {0, 0, 255});
 
     img->writeToFile("tst.bmp");
      
