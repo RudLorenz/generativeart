@@ -1,3 +1,5 @@
+#include <utility>
+
 #ifndef POLYGON_H
 #define POLYGON_H
 
@@ -10,9 +12,9 @@ class Polygon : public Drawable
 public:
 
     Polygon() = delete;
-    Polygon(const std::vector<Point>& points);
+    Polygon(std::vector<Point> points);
     Polygon(std::initializer_list<Point> lst);
-    Polygon(std::initializer_list<unsigned>   lst);
+    Polygon(std::initializer_list<int>   lst);
 
     void append(std::initializer_list<Point> lst);
 
@@ -30,8 +32,8 @@ private:
 };
 
 
-Polygon::Polygon(const std::vector<Point>& points)
-    : points_(points)
+Polygon::Polygon(std::vector<Point> points)
+    : points_(std::move(points))
 {
 }
 
@@ -42,7 +44,7 @@ Polygon::Polygon(std::initializer_list<Point> lst)
 }
 
 
-Polygon::Polygon(std::initializer_list<unsigned> lst)
+Polygon::Polygon(std::initializer_list<int> lst)
 {
     auto tail = lst.end();
 
@@ -92,9 +94,9 @@ void Polygon::plotLineLow(const Point& p1, const Point& p2, BitmapImg &canvas, c
     }
 
     int approx = 2 * dy - dx;
-    unsigned y_step = p1.y();
+    int y_step = p1.y();
 
-    for (unsigned x_step = p1.x(); x_step <= p2.x(); ++x_step)
+    for (int x_step = p1.x(); x_step <= p2.x(); ++x_step)
     {
         canvas(x_step, y_step) = color;  // TODO add sign + range check
 
@@ -123,9 +125,9 @@ void Polygon::plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, 
     }
 
     int approx = 2 * dx - dy;
-    unsigned x_step = p1.x();
+    int x_step = p1.x();
 
-    for (unsigned y_step = p1.y(); y_step <= p2.y(); ++y_step)
+    for (int y_step = p1.y(); y_step <= p2.y(); ++y_step)
     {
         canvas(x_step, y_step) = color;  // TODO add sign + range check
 
@@ -142,7 +144,7 @@ void Polygon::plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, 
 
 void Polygon::plotLine(const Point &p1, const Point &p2, BitmapImg &canvas, const BGRPalette &color)
 {
-    if (std::abs(static_cast<int>(p2.y() - p1.y())) < std::abs(static_cast<int>(p2.x() - p1.x())))
+    if (std::abs(p2.y() - p1.y()) < std::abs(p2.x() - p1.x()))
     {
         if (p1.x() > p2.x()) {
             plotLineLow(p2, p1, canvas, color);

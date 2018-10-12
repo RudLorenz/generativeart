@@ -5,6 +5,8 @@
 
 #include <vector>
 #include <ostream>
+#include <cmath>
+#include <iostream>
 
 class Point : public Drawable
 {
@@ -21,14 +23,19 @@ public:
 
     void draw(BitmapImg& canvas, const BGRPalette& color) override;
 
-    unsigned x() const; // ugly
-    unsigned y() const;
+    double distance(const Point& p) const;
+
+    inline int x() const; // ugly
+    inline int y() const;
 
 private:
-    unsigned x_;
-    unsigned y_;
+    int x_;
+    int y_;
 };
 
+double distance(const Point &p1, const Point &p2) {
+    return p1.distance(p2);
+}
 
 Point::Point() : x_(0), y_(0)
 {
@@ -52,15 +59,19 @@ void Point::draw(BitmapImg& canvas, const BGRPalette& color)
     canvas(x_, y_) = color;
 }
 
-unsigned Point::x() const
+int Point::x() const
 {
     return x_;
 }
 
-unsigned Point::y() const
+int Point::y() const
 {
     return y_;
 }
 
+double Point::distance(const Point &p) const
+{
+    return std::sqrt( (x_ - p.x_) * (x_ - p.x_) +  (y_ - p.y_) * (y_ - p.y_) );
+}
 
 #endif // POINT_H

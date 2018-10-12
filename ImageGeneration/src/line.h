@@ -88,7 +88,7 @@ void Line::plotLineLow(const Point& p1, const Point& p2, BitmapImg &canvas, cons
     int approx = 2 * dy - dx;
     unsigned y_step = p1.y();
 
-    for (unsigned x_step = p1.x(); x_step <= p2.x(); ++x_step)
+    for (int x_step = p1.x(); x_step <= p2.x(); ++x_step)
     {
         canvas(x_step, y_step) = color;  // TODO add sign + range check
 
@@ -117,9 +117,9 @@ void Line::plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, con
     }
 
     int approx = 2 * dx - dy;
-    unsigned x_step = p1.x();
+    int x_step = p1.x();
 
-    for (unsigned y_step = p1.y(); y_step <= p2.y(); ++y_step)
+    for (int y_step = p1.y(); y_step <= p2.y(); ++y_step)
     {
         canvas(x_step, y_step) = color;  // TODO add sign + range check
 
