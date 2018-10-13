@@ -5,4 +5,4 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Wextra -pedantic -O2 -
  -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC")
 
 add_executable(ImageGeneration main.cpp src/bitmapimg.h src/bmpheader.h src/idrawable.h
-        src/icolor.h src/point.h src/line.h src/polygon.h src/gradient.h)
+        src/icolor.h src/point.h src/line.h src/polygon.h src/gradient.h src/gradient3.h)
