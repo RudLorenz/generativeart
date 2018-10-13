@@ -20,12 +20,12 @@ public:
 
     size_t size() const;
 
-    void draw(BitmapImg &canvas, const BGRPalette &color) override;
+    void draw(BitmapImg &canvas, const IColor &color) override;
 
 protected:
-    void plotLineLow (const Point& p1, const Point& p2, BitmapImg &canvas, const BGRPalette &color);
-    void plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, const BGRPalette &color);
-    void plotLine    (const Point& p1, const Point& p2, BitmapImg &canvas, const BGRPalette &color);
+    void plotLine    (const Point& p1, const Point& p2, BitmapImg &canvas, const IColor &color);
+    void plotLineLow (const Point& p1, const Point& p2, BitmapImg &canvas, const IColor &color);
+    void plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, const IColor &color);
 
 private:
     std::vector<Point> points_;
@@ -33,13 +33,13 @@ private:
 
 
 Polygon::Polygon(std::vector<Point> points)
-    : points_(std::move(points)) // or should I copy?
+: points_(std::move(points)) // or should I copy?
 {
 }
 
 
 Polygon::Polygon(std::initializer_list<Point> lst)
-    : points_(lst)
+: points_(lst)
 {
 }
 
@@ -70,7 +70,7 @@ size_t Polygon::size() const
 }
 
 
-void Polygon::draw(BitmapImg &canvas, const BGRPalette &color)
+void Polygon::draw(BitmapImg &canvas, const IColor &color)
 {
     for (auto it = points_.begin(); it != points_.end()-1; ++it) {
         plotLine(*it, *(it+1), canvas, color);
@@ -79,7 +79,7 @@ void Polygon::draw(BitmapImg &canvas, const BGRPalette &color)
 }
 
 
-void Polygon::plotLineLow(const Point& p1, const Point& p2, BitmapImg &canvas, const BGRPalette &color)
+void Polygon::plotLineLow(const Point& p1, const Point& p2, BitmapImg &canvas, const IColor &color)
 {
     int dx = p2.x() - p1.x();
     int dy = p2.y() - p1.y();
@@ -97,7 +97,7 @@ void Polygon::plotLineLow(const Point& p1, const Point& p2, BitmapImg &canvas, c
 
     for (int x_step = p1.x(); x_step <= p2.x(); ++x_step)
     {
-        canvas(x_step, y_step) = color;  // TODO add sign + range check
+        canvas(x_step, y_step) = color.getcolor(x_step, y_step);  // TODO add sign + range check
 
         if (approx > 0)
         {
@@ -110,7 +110,7 @@ void Polygon::plotLineLow(const Point& p1, const Point& p2, BitmapImg &canvas, c
 }
 
 
-void Polygon::plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, const BGRPalette &color)
+void Polygon::plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, const IColor &color)
 {
     int dx = p2.x() - p1.x();
     int dy = p2.y() - p1.y();
@@ -128,7 +128,7 @@ void Polygon::plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, 
 
     for (int y_step = p1.y(); y_step <= p2.y(); ++y_step)
     {
-        canvas(x_step, y_step) = color;  // TODO add sign + range check
+        canvas(x_step, y_step) = color.getcolor(x_step, y_step);  // TODO add sign + range check
 
         if (approx > 0)
         {
@@ -141,7 +141,7 @@ void Polygon::plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, 
 }
 
 
-void Polygon::plotLine(const Point &p1, const Point &p2, BitmapImg &canvas, const BGRPalette &color)
+void Polygon::plotLine(const Point &p1, const Point &p2, BitmapImg &canvas, const IColor &color)
 {
     if (std::abs(p2.y() - p1.y()) < std::abs(p2.x() - p1.x()))
     {

@@ -1,12 +1,12 @@
 #ifndef POINT_H
 #define POINT_H
 
+#include "idrawable.h"
+#include "icolor.h"
+
 #include <vector>
 #include <ostream>
 #include <cmath>
-#include <iostream>
-
-#include "idrawable.h"
 
 class Point : public IDrawable
 {
@@ -21,7 +21,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const Point& pt);
 
-    void draw(BitmapImg& canvas, const BGRPalette& color) override;
+    void draw(BitmapImg &canvas, const IColor &color) override;
 
     double distance(const Point& p) const;
 
@@ -57,9 +57,9 @@ std::ostream &operator<<(std::ostream &os, const Point &pt)
 }
 
 
-void Point::draw(BitmapImg& canvas, const BGRPalette& color)
+void Point::draw(BitmapImg &canvas, const IColor &color)
 {
-    canvas(x_, y_) = color;
+    canvas(x_, y_) = color.getcolor(x_, y_);
 }
 
 

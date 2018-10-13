@@ -2,15 +2,17 @@
 #define GENERATIVEART_GRADIENT_H
 
 #include "bmpheader.h"
+#include "icolor.h"
 #include "point.h"
 
-class Gradient
+class Gradient : public IColor
 {
 public:
     Gradient() = delete;
     Gradient(const Point& p1, const Point& p2,
             const BGRPalette& start_c, const BGRPalette& end_c);
 
+    BGRPalette getcolor(int x, int y) const override;
     BGRPalette getcolor(const Point& p) const;
 
 private:
@@ -35,9 +37,9 @@ Gradient::Gradient(const Point& p1, const Point& p2,
 }
 
 
-BGRPalette Gradient::getcolor(const Point& p) const
+BGRPalette Gradient::getcolor(int x, int y) const
 {
-    double result_c = x_cf_ * p.x() + y_cf_ * p.y();
+    double result_c = x_cf_ * x + y_cf_ * y;
 
     if (result_c <= c1_) {
         return start_;
@@ -50,7 +52,13 @@ BGRPalette Gradient::getcolor(const Point& p) const
             static_cast<unsigned char>((start_.b * (c2_ - result_c) + end_.b * (result_c - c1_)) / (c2_ - c1_)),
             static_cast<unsigned char>((start_.g * (c2_ - result_c) + end_.g * (result_c - c1_)) / (c2_ - c1_)),
             static_cast<unsigned char>((start_.r * (c2_ - result_c) + end_.r * (result_c - c1_)) / (c2_ - c1_))
-            );
+    );
+}
+
+
+BGRPalette Gradient::getcolor(const Point &p) const
+{
+    return getcolor(p.x(), p.y());
 }
 
 #endif //GENERATIVEART_GRADIENT_H

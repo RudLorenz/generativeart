@@ -15,12 +15,12 @@ public:
     Line(const Point& p1, const Point& p2);
     Line(int x1, int y1, int x2, int y2);
 
-    void draw(BitmapImg& canvas, const BGRPalette& color) override;
+    void draw(BitmapImg &canvas, const IColor &color) override;
 
 private:
 
-    void plotLineLow (const Point& p1, const Point& p2, BitmapImg &canvas, const BGRPalette &color);
-    void plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, const BGRPalette &color);
+    void plotLineLow (const Point& p1, const Point& p2, BitmapImg &canvas, const IColor &color);
+    void plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, const IColor &color);
 
     Point p1_;
     Point p2_;
@@ -44,9 +44,9 @@ Line::Line(int x1, int y1, int x2, int y2)
 }
 
 
-void Line::draw(BitmapImg &canvas, const BGRPalette &color)
+void Line::draw(BitmapImg &canvas, const IColor &color)
 {
-    if (std::abs(static_cast<int>(p2_.y() - p1_.y())) < std::abs(static_cast<int>(p2_.x() - p1_.x())))
+    if (std::abs(p2_.y() - p1_.y()) < std::abs(p2_.x() - p1_.x()))
     {
         if (p1_.x() > p2_.x()) {
             plotLineLow(p2_, p1_, canvas, color);
@@ -67,7 +67,7 @@ void Line::draw(BitmapImg &canvas, const BGRPalette &color)
 }
 
 
-void Line::plotLineLow(const Point& p1, const Point& p2, BitmapImg &canvas, const BGRPalette &color)
+void Line::plotLineLow(const Point& p1, const Point& p2, BitmapImg &canvas, const IColor &color)
 {
     int dx = p2.x() - p1.x();
     int dy = p2.y() - p1.y();
@@ -81,11 +81,11 @@ void Line::plotLineLow(const Point& p1, const Point& p2, BitmapImg &canvas, cons
     }
 
     int approx = 2 * dy - dx;
-    unsigned y_step = p1.y();
+    int y_step = p1.y();
 
     for (int x_step = p1.x(); x_step <= p2.x(); ++x_step)
     {
-        canvas(x_step, y_step) = color;  // TODO add sign + range check
+        canvas(x_step, y_step) = color.getcolor(x_step, y_step);  // TODO add sign + range check
 
         if (approx > 0)
         {
@@ -98,7 +98,7 @@ void Line::plotLineLow(const Point& p1, const Point& p2, BitmapImg &canvas, cons
 }
 
 
-void Line::plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, const BGRPalette &color)
+void Line::plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, const IColor &color)
 {
     int dx = p2.x() - p1.x();
     int dy = p2.y() - p1.y();
@@ -116,7 +116,7 @@ void Line::plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, con
 
     for (int y_step = p1.y(); y_step <= p2.y(); ++y_step)
     {
-        canvas(x_step, y_step) = color;  // TODO add sign + range check
+        canvas(x_step, y_step) = color.getcolor(x_step, y_step);  // TODO add sign + range check
 
         if (approx > 0)
         {
