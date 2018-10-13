@@ -1,12 +1,13 @@
-#ifndef DRAWABLE_H
-#define DRAWABLE_H
+#ifndef IDRAWABLE_H
+#define IDRAWABLE_H
 
 #include "bitmapimg.h"
 
-class Drawable
+class IDrawable
 {
 public:
     virtual void draw(BitmapImg& canvas, const BGRPalette& color) = 0;
+    virtual ~IDrawable() {};
 };
 
-#endif // DRAWABLE_H
+#endif // IDRAWABLE_H

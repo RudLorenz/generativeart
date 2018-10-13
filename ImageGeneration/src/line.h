@@ -1,24 +1,19 @@
 #ifndef LINE_H
 #define LINE_H
 
-#include "drawable.h"
-#include "point.h"
-
 #include <cmath>
 #include <vector>
 #include <utility>
 
-class Line : public Drawable
+#include "idrawable.h"
+#include "point.h"
+
+class Line : public IDrawable
 {
 public:
     Line();
     Line(const Point& p1, const Point& p2);
-    Line(unsigned x1, unsigned y1, unsigned x2, unsigned y2);
-    Line(const Line& other) = default;
-    Line(Line&& other) = default;
-
-    Line& operator=(const Line& other) = default;
-    Line& operator=(Line&& other) = default;
+    Line(int x1, int y1, int x2, int y2);
 
     void draw(BitmapImg& canvas, const BGRPalette& color) override;
 
@@ -43,7 +38,7 @@ Line::Line(const Point &p1, const Point &p2)
 }
 
 
-Line::Line(unsigned x1, unsigned y1, unsigned x2, unsigned y2)
+Line::Line(int x1, int y1, int x2, int y2)
 : p1_(x1, y1), p2_(x2, y2)
 {
 }
@@ -132,7 +127,6 @@ void Line::plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, con
         approx = approx + 2 * dx;
     }
 }
-
 
 
 #endif // LINE_H

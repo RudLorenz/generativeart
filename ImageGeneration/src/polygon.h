@@ -3,11 +3,11 @@
 #ifndef POLYGON_H
 #define POLYGON_H
 
-#include "drawable.h"
+#include "idrawable.h"
 #include "point.h"
 #include "line.h"
 
-class Polygon : public Drawable
+class Polygon : public IDrawable
 {
 public:
 
@@ -33,7 +33,7 @@ private:
 
 
 Polygon::Polygon(std::vector<Point> points)
-    : points_(std::move(points))
+    : points_(std::move(points)) // or should I copy?
 {
 }
 
@@ -72,8 +72,7 @@ size_t Polygon::size() const
 
 void Polygon::draw(BitmapImg &canvas, const BGRPalette &color)
 {
-    for (auto it = points_.begin(); it != points_.end()-1; ++it)
-    {
+    for (auto it = points_.begin(); it != points_.end()-1; ++it) {
         plotLine(*it, *(it+1), canvas, color);
     }
     plotLine(points_.front(), points_.back(), canvas, color);
