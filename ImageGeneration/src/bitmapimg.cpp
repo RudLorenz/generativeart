@@ -2,20 +2,20 @@
 
 #include <fstream>
 
-BitmapImg::BitmapImg()
-    : width_(0)
-    , height_(0)
-    , pixels_(0)
-{
-}
-
-
 BitmapImg::BitmapImg(size_t width, size_t height)
     : width_(width)
     , height_(height)
     , pixels_( 3 * ( ( (4 - ( width % 4 ) ) % 4 ) + width) * height, 0 )
 // Don't forget the padding declared in bmp file format:
 // "Each row in the Pixel array is padded to a multiple of 4 bytes in size "
+{
+}
+
+
+BitmapImg::BitmapImg(size_t width, size_t height, BGRPalette bg_color)
+    : width_(width)
+    , height_(height)
+    , pixels_( 3 * ( ( (4 - ( width % 4 ) ) % 4 ) + width) * height, bg_color )
 {
 }
 

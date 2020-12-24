@@ -7,8 +7,9 @@
 class BitmapImg
 {
 public:
-    BitmapImg();
+    BitmapImg() = default;
     BitmapImg(size_t width, size_t height);
+    BitmapImg(size_t width, size_t height, BGRPalette bg_color);
 
     void writeToFile(const std::string& filename);
 
