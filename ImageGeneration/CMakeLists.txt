@@ -9,9 +9,9 @@ target_include_directories(imagegeneration PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/in
 
 target_sources(imagegeneration
         PUBLIC include/bitmapimg.h include/bmpheader.h include/idrawable.h include/icolor.h include/point.h
-            include/line.h include/polygon.h include/gradient.h include/gradient3.h
+            include/line.h include/polygon.h include/gradient.h include/gradient3.h include/solidcolor.h
         PRIVATE main.cpp src/bitmapimg.cpp src/bmpheader.cpp src/point.cpp src/line.cpp src/polygon.cpp
-            src/gradient.cpp src/gradient3.cpp)
+            src/gradient.cpp src/gradient3.cpp src/solidcolor.cpp)
 
 target_compile_options(imagegeneration PRIVATE
         $<$<CONFIG:Debug>: -Wall -Wextra -Wpedantic -fno-omit-frame-pointer -fsanitize=address -g>)
