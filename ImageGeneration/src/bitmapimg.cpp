@@ -1,51 +1,30 @@
-#ifndef BITMAPIMG_H
-#define BITMAPIMG_H
+#include "bitmapimg.h"
 
-#include "bmpheader.h"
-
-#include <vector>
-#include <string>
 #include <fstream>
 
-class BitmapImg
-{
-public:
-    BitmapImg();
-    BitmapImg(size_t width, size_t height);
-
-    int writeToFile(const std::string& filename);
-
-    size_t getWidth() const;
-    size_t getHeight() const;
-
-    BGRPalette& operator()(size_t row, size_t col);
-    const BGRPalette& operator()(size_t row, size_t col) const;
-
-private:
-    size_t width_;
-    size_t height_;
-    std::vector<BGRPalette> pixels_;
-};
-
-
-BitmapImg::BitmapImg() : width_(0), height_(0), pixels_(0)
+BitmapImg::BitmapImg()
+    : width_(0)
+    , height_(0)
+    , pixels_(0)
 {
 }
 
 
-BitmapImg::BitmapImg(size_t width, size_t height) : width_(width), height_(height),
-                                                   pixels_( 3 * ( ( (4 - ( width % 4 ) ) % 4 ) + width) * height, 0 )
+BitmapImg::BitmapImg(size_t width, size_t height)
+    : width_(width)
+    , height_(height)
+    , pixels_( 3 * ( ( (4 - ( width % 4 ) ) % 4 ) + width) * height, 0 )
 // Don't forget the padding declared in bmp file format:
 // "Each row in the Pixel array is padded to a multiple of 4 bytes in size "
 {
 }
 
 
-int BitmapImg::writeToFile(const std::string &filename)
+void BitmapImg::writeToFile(const std::string &filename)
 {
     BitmapHeader bmp_header;
 
-    auto padding = (4 - (width_ % 4)) % 4;
+    const auto padding = (4 - (width_ % 4)) % 4;
 
     bmp_header.fileSize = static_cast<unsigned int>(54 + pixels_.size());
     bmp_header.offset = 54;
@@ -62,17 +41,13 @@ int BitmapImg::writeToFile(const std::string &filename)
     std::ofstream out_f(filename, std::ios::out | std::ofstream::binary);
 
     if (!out_f) {
-        std::string err_message = "file ";
-        err_message += filename;
-        err_message += " not found\n";
+        std::string err_message = "Unable to open file " + filename;
         throw std::runtime_error(err_message);
     }
 
     out_f.write(reinterpret_cast<char *>(&bmp_header), sizeof(bmp_header));
     out_f.write(reinterpret_cast<char *>(pixels_.data()), 3 * (width_ + padding) * height_);
     out_f.close();
-
-    return 0;
 }
 
 
@@ -111,6 +86,3 @@ const BGRPalette &BitmapImg::operator()(size_t row, size_t col) const
     // turn the image upside down so (0,0) is in left top counter
     return pixels_[(height_ - col - 1) * width_ + row];
 }
-
-
-#endif // BITMAPIMG_H

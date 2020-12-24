@@ -1,8 +1,20 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.15)
 project(ImageGeneration)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Wextra -pedantic -O2 -Wshadow -Wformat=2 -Wfloat-equal -Wconversion \
- -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC")
+add_executable(imagegeneration)
 
-add_executable(ImageGeneration main.cpp src/bitmapimg.h src/bmpheader.h src/idrawable.h
-        src/icolor.h src/point.h src/line.h src/polygon.h src/gradient.h src/gradient3.h)
+target_compile_features(imagegeneration PUBLIC cxx_std_17)
+
+target_include_directories(imagegeneration PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+target_sources(imagegeneration
+        PUBLIC include/bitmapimg.h include/bmpheader.h include/idrawable.h include/icolor.h include/point.h
+            include/line.h include/polygon.h include/gradient.h include/gradient3.h
+        PRIVATE main.cpp src/bitmapimg.cpp src/bmpheader.cpp src/point.cpp src/line.cpp src/polygon.cpp
+            src/gradient.cpp src/gradient3.cpp)
+
+target_compile_options(imagegeneration PRIVATE
+        $<$<CONFIG:Debug>: -Wall -Wextra -Wpedantic -fno-omit-frame-pointer -fsanitize=address -g>)
+
+target_link_options(imagegeneration PRIVATE
+        $<$<CONFIG:Debug>: -fno-omit-frame-pointer -fsanitize=address>)

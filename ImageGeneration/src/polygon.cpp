@@ -1,45 +1,13 @@
-#include <utility>
-
-#ifndef POLYGON_H
-#define POLYGON_H
-
-#include "idrawable.h"
-#include "point.h"
-#include "line.h"
-
-class Polygon : public IDrawable
-{
-public:
-
-    Polygon() = delete;
-    Polygon(std::vector<Point> points);
-    Polygon(std::initializer_list<Point> lst);
-    Polygon(std::initializer_list<int>   lst);
-
-    void append(std::initializer_list<Point> lst);
-
-    size_t size() const;
-
-    void draw(BitmapImg &canvas, const IColor &color) override;
-
-protected:
-    void plotLine    (const Point& p1, const Point& p2, BitmapImg &canvas, const IColor &color);
-    void plotLineLow (const Point& p1, const Point& p2, BitmapImg &canvas, const IColor &color);
-    void plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, const IColor &color);
-
-private:
-    std::vector<Point> points_;
-};
-
+#include "polygon.h"
 
 Polygon::Polygon(std::vector<Point> points)
-: points_(std::move(points)) // or should I copy?
+    : points_(std::move(points)) // or should I copy?
 {
 }
 
 
 Polygon::Polygon(std::initializer_list<Point> lst)
-: points_(lst)
+    : points_(lst)
 {
 }
 
@@ -70,7 +38,7 @@ size_t Polygon::size() const
 }
 
 
-void Polygon::draw(BitmapImg &canvas, const IColor &color)
+void Polygon::draw(BitmapImg &canvas, const IColor &color) const
 {
     for (auto it = points_.begin(); it != points_.end()-1; ++it) {
         plotLine(*it, *(it+1), canvas, color);
@@ -162,5 +130,3 @@ void Polygon::plotLine(const Point &p1, const Point &p2, BitmapImg &canvas, cons
         }
     }
 }
-
-#endif // POLYGON_H

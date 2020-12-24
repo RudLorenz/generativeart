@@ -1,50 +1,23 @@
-#ifndef LINE_H
-#define LINE_H
+#include "line.h"
 
 #include <cmath>
-#include <vector>
 #include <utility>
 
-#include "idrawable.h"
-#include "point.h"
-
-class Line : public IDrawable
-{
-public:
-    Line();
-    Line(const Point& p1, const Point& p2);
-    Line(int x1, int y1, int x2, int y2);
-
-    void draw(BitmapImg &canvas, const IColor &color) override;
-
-private:
-
-    void plotLineLow (const Point& p1, const Point& p2, BitmapImg &canvas, const IColor &color);
-    void plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, const IColor &color);
-
-    Point p1_;
-    Point p2_;
-};
-
-
-Line::Line() : p1_(), p2_()
-{
-}
-
-
-Line::Line(const Point &p1, const Point &p2)
-: p1_(p1), p2_(p2)
+Line::Line(Point p1, Point p2)
+    : p1_(std::move(p1))
+    , p2_(std::move(p2))
 {
 }
 
 
 Line::Line(int x1, int y1, int x2, int y2)
-: p1_(x1, y1), p2_(x2, y2)
+    : p1_(x1, y1)
+    , p2_(x2, y2)
 {
 }
 
 
-void Line::draw(BitmapImg &canvas, const IColor &color)
+void Line::draw(BitmapImg &canvas, const IColor &color) const
 {
     if (std::abs(p2_.y() - p1_.y()) < std::abs(p2_.x() - p1_.x()))
     {
@@ -127,6 +100,3 @@ void Line::plotLineHigh(const Point& p1, const Point& p2, BitmapImg &canvas, con
         approx = approx + 2 * dx;
     }
 }
-
-
-#endif // LINE_H

@@ -1,12 +1,12 @@
 #include <memory>
 #include <iostream>
 
-#include "src/bitmapimg.h"
-#include "src/gradient.h"
-#include "src/gradient3.h"
-#include "src/line.h"
-#include "src/point.h"
-#include "src/polygon.h"
+#include "bitmapimg.h"
+#include "gradient.h"
+#include "gradient3.h"
+#include "line.h"
+#include "point.h"
+#include "polygon.h"
 
 
 int main()
@@ -29,6 +29,7 @@ int main()
     }
 
     img->writeToFile("tst.bmp");
+    std::cout << "Done!" << std::endl;
      
     return 0;
 }
